@@ -1,0 +1,29 @@
+on init
+    setprop sys.usb.controller "musb-hdrc"
+    setprop sys.usb.ffs.aio_compat 1
+    setprop sys.usb.configfs 1
+
+on fs
+    symlink /dev/block/platform/soc/11230000.mmc /dev/block/platform/bootdevice
+
+    wait /dev/block/platform/bootdevice/by-name/userdata
+    mkdir /dev/block/platform/mtk-msdc.0 0755 root root
+
+    symlink /dev/block/platform/soc/11230000.mmc/by-name /dev/block/by-name
+    symlink /dev/block/platform/soc/11230000.mmc/by-name /dev/block/platform/soc/by-name
+
+    symlink /dev/block/platform/soc/11230000.mmc /dev/block/platform/mtk-msdc.0/11230000.MSDC0
+    symlink /dev/block/platform/soc/11230000.mmc/by-name /dev/block/platform/mtk-msdc.0/by-name
+
+    exec_start fix-symlinks
+
+on property:twrp.preloader=rw
+    write /sys/block/mmcblk0boot0/force_ro 0
+
+on property:twrp.preloader=ro
+    write /sys/block/mmcblk0boot0/force_ro 1
+
+service fix-symlinks /sbin/sh /sbin/fix-symlinks.sh
+    seclabel u:r:recovery:s0
+    disabled
+    oneshot

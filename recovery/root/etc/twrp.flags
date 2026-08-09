@@ -1,0 +1,3 @@
+/system        ext4   /dev/block/platform/bootdevice/by-name/system      flags=backup=1
+/system_image  emmc   /dev/block/platform/bootdevice/by-name/system      flags=backup=1
+/persist       ext4   /dev/block/platform/bootdevice/by-name/persist     flags=display="Persist";backup=1;removable

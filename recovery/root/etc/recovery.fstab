@@ -1,0 +1,15 @@
+# <file system> <mount point> <type> <mount_flags> <fs_mgr_flags>
+/dev/block/platform/bootdevice/by-name/lk           /lk               emmc    defaults defaults
+/dev/block/platform/bootdevice/by-name/boot         /boot             emmc    defaults defaults
+/dev/block/platform/bootdevice/by-name/system       /system           ext4    ro                                wait
+/dev/block/platform/bootdevice/by-name/system       /system_image     emmc    defaults defaults
+/dev/block/platform/bootdevice/by-name/userdata     /data             ext4    noatime,nosuid,nodev,noauto_da_alloc,discard               wait,check,encryptable=/dev/block/platform/bootdevice/by-name/metadata
+/dev/block/platform/bootdevice/by-name/cache        /cache            ext4    noatime,nosuid,nodev,noauto_da_alloc,discard               wait,check
+/dev/block/platform/bootdevice/by-name/persist      /persist          ext4    noatime,nosuid,nodev                                      wait
+/dev/block/platform/bootdevice/by-name/MISC         /misc             emmc    defaults defaults
+/dev/block/platform/bootdevice/by-name/recovery     /recovery         emmc    defaults defaults
+
+/devices/platform/mt_usb*                          auto      auto      defaults        voldmanaged=usbotg:auto
+
+/dev/block/platform/bootdevice/by-name/tee1          /tee1           emmc  defaults defaults
+/dev/block/platform/bootdevice/by-name/tee2          /tee2           emmc  defaults defaults
