@@ -1,0 +1,15 @@
+/system_root    ext4    /dev/block/current-system                                    flags=display="System";backup=1;wipeingui
+/data           ext4    /dev/block/platform/bootdevice/by-name/userdata              flags=display="Data"
+/cache          ext4    /dev/block/platform/bootdevice/by-name/cache                 flags=display="Cache";wipeingui
+/persist        ext4    /dev/block/platform/bootdevice/by-name/persist               flags=display="Persist";backup=1
+/misc           emmc    /dev/block/platform/bootdevice/by-name/misc /dev/block/platform/bootdevice/by-name/MISC flags=display="Misc"
+
+/boot           emmc    /dev/block/current-boot                                      flags=display="Boot";backup=1;flashimg=1
+/recovery       emmc    /dev/block/platform/bootdevice/by-name/recovery              flags=display="Recovery";backup=1;flashimg=1
+/boot_a         emmc    /dev/block/platform/bootdevice/by-name/boot_a                flags=display="Boot A";backup=1;flashimg=1
+/boot_b         emmc    /dev/block/platform/bootdevice/by-name/boot_b                flags=display="Boot B";backup=1;flashimg=1
+/system_a       emmc    /dev/block/platform/bootdevice/by-name/system_a              flags=display="System A";backup=1;flashimg=1
+/system_b       emmc    /dev/block/platform/bootdevice/by-name/system_b              flags=display="System B";backup=1;flashimg=1
+/boot0          emmc    /dev/block/mmcblk0boot0                                      flags=display="Preloader";backup=1;flashimg=1
+
+/usb-otg        vfat    /dev/block/platform/mt_usb/sda1 /dev/block/platform/mt_usb/sda flags=display="USB-OTG";storage;wipeingui;removable

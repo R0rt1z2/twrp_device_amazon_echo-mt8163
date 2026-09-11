@@ -4,7 +4,9 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+add_lunch_combo omni_biscuit-eng
 add_lunch_combo omni_checkers-eng
 add_lunch_combo omni_cronos-eng
 add_lunch_combo omni_crown-eng
+add_lunch_combo omni_radar-eng
 add_lunch_combo omni_rook-eng

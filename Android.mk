@@ -6,6 +6,6 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifneq ($(filter checkers cronos crown rook,$(TARGET_DEVICE)),)
+ifneq ($(filter biscuit checkers cronos crown radar rook,$(TARGET_DEVICE)),)
 include $(call all-subdir-makefiles,$(LOCAL_PATH))
 endif

@@ -1,0 +1,29 @@
+#!/sbin/sh
+
+PATH=/sbin:/system/sbin:/system/bin:/system/xbin
+
+get_boot_slot() {
+    getprop ro.boot.slot_suffix | sed 's/_//'
+}
+
+/sbin/amzn_bcbtool dump > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+    /sbin/bcbtool init $(get_boot_slot)
+    exit 0
+fi
+
+active_slot=$(/sbin/amzn_bcbtool get_active)
+if [ $? -ne 0 ]; then
+    echo "No active slot! Setting active slot to currently booted one."
+    /sbin/bcbtool set_active "$(get_boot_slot)"
+    exit 0
+else
+    echo "bcbtool reports active slot: ${active_slot}"
+fi
+
+slot_a_success=$(/sbin/amzn_bcbtool get a success)
+slot_b_success=$(/sbin/amzn_bcbtool get b success)
+if [ "$slot_a_success" = "0" ] && [ "$slot_b_success" = "0" ]; then
+    echo "Preventing potential brick by ensuring at least one slot is successful."
+    /sbin/bcbtool set_active "$(get_boot_slot)"
+fi

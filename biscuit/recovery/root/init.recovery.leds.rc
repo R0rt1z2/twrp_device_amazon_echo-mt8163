@@ -1,0 +1,2 @@
+on init
+    write /sys/bus/i2c/devices/0-003f/boot_animation 0

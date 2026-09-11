@@ -1,0 +1,45 @@
+import /init.recovery.leds.rc
+
+on init
+    setprop sys.usb.ffs.aio_compat 1
+
+    write /sys/devices/platform/mt_usb/cmode 1
+
+on fs
+    start ffs-adb
+
+    symlink /dev/block/platform/soc/11230000.mmc /dev/block/platform/bootdevice
+    symlink /dev/block/platform/soc/11230000.mmc/by-name /dev/block/by-name
+
+    mkdir /dev/block/platform/mtk-msdc.0 0755 root root
+    symlink /dev/block/platform/soc/11230000.mmc /dev/block/platform/mtk-msdc.0/11230000.MSDC0
+    symlink /dev/block/platform/soc/11230000.mmc/by-name /dev/block/platform/mtk-msdc.0/by-name
+
+    wait /dev/block/platform/bootdevice/by-name/userdata
+
+    exec u:r:recovery:s0 root root -- /sbin/sh /sbin/e2fsck-data.sh
+    exec u:r:recovery:s0 root root -- /sbin/sh /sbin/slot-symlinks.sh
+
+service ffs-adb /sbin/sh /sbin/ffs-adb.sh
+    seclabel u:r:recovery:s0
+    disabled
+    oneshot
+
+service console /sbin/sh
+    console
+    seclabel u:r:recovery:s0
+
+service led-anim /sbin/sh /sbin/led-anim.sh
+    seclabel u:r:recovery:s0
+    disabled
+
+on boot
+    exec u:r:recovery:s0 root root -- /sbin/sh /sbin/bcbfix
+
+    start led-anim
+
+on property:twrp.preloader=rw
+    write /sys/block/mmcblk0boot0/force_ro 0
+
+on property:twrp.preloader=ro
+    write /sys/block/mmcblk0boot0/force_ro 1

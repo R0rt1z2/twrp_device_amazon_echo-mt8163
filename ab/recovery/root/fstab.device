@@ -1,0 +1,2 @@
+# <src>                                         <mnt_point> <type> <mnt_flags> <fs_mgr_flags>
+/dev/block/platform/bootdevice/by-name/misc     /misc       emmc   defaults    defaults

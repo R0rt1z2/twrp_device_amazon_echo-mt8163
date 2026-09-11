@@ -1,0 +1,34 @@
+#!/sbin/sh
+
+set -e
+
+PATH=/sbin:/system/sbin:/system/bin:/system/xbin
+BYNAME=/dev/block/platform/bootdevice/by-name
+
+get_boot_slot() {
+    getprop ro.boot.slot_suffix | sed 's/_//'
+}
+
+update_slot() {
+    slot=$(/sbin/amzn_bcbtool get_active)
+
+    if [ "$slot" = "a" ]; then
+        slot_suffix="_a"
+    elif [ "$slot" = "b" ]; then
+        slot_suffix="_b"
+    else
+        echo "BCB seems broken! DO NOT REBOOT UNTIL YOU RUN 'bcbfix'."
+        exit 1
+    fi
+
+    if [ "$slot" != "$(get_boot_slot)" ]; then
+        resetprop ro.boot.slot_suffix "${slot_suffix}" > /dev/null 2>&1
+
+        rm -f /dev/block/current-system /dev/block/current-boot > /dev/null 2>&1
+        ln -s "$(readlink -f ${BYNAME}/system${slot_suffix})" /dev/block/current-system > /dev/null 2>&1
+        ln -s "$(readlink -f ${BYNAME}/boot${slot_suffix})" /dev/block/current-boot > /dev/null 2>&1
+    fi
+}
+
+/sbin/amzn_bcbtool $@
+update_slot
